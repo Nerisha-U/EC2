@@ -11,13 +11,19 @@ pipeline {
         
         stage('plan') {
             steps {
-                sh 'terraform plan'
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'aws-compute', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                // some block
+                   sh 'terraform plan'
+                }
             } 
         }  
         
         stage('apply') {
             steps {
-                sh 'terraform apply'
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'aws-compute', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                // some block
+                sh 'terraform apply --auto-approve'
+                }
             } 
         } 
     }
